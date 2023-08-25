@@ -1,0 +1,8 @@
+# IDEA通用
+.idea
+.DS_Store
+
+# Python通用
+__pycache__
+.ipynb_checkpoints
+
