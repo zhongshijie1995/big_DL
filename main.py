@@ -1,24 +1,7 @@
-from typing import Dict
+from _tool import local_capture
+from _logic import singe_frame
 
-from fastapi import FastAPI
-
-from _model import yolo_v5
-
-
-# 初始化Web服务APP
-app = FastAPI()
-
-# 初始化模型
-yolo_v5_ctl = yolo_v5.YoloV5Ctl()
-yolo_v5_ctl.init()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.post("/yolo_v5_demo")
-async def yolo_v5_demo(req: Dict):
-    result_str = yolo_v5_ctl.detect_by_url(req.get("imgUrl"))
-    return {"message": result_str}
+if __name__ == '__main__':
+    task_func_list = [singe_frame.say_hello, ]
+    task_func_args_list = ["显示目标", ]
+    local_capture.realtime(3, task_func_list, task_func_args_list)

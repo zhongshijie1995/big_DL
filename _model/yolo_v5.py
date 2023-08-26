@@ -12,8 +12,8 @@ class YoloV5Ctl(object):
             self.model = torch.hub.load('_model/yolo_v5', 'custom', path='_model/yolo_v5.pt', source='local')
         return
 
-    def detect_by_url(self, img: str):
+    def detect(self, img):
         # 模型识别
         results = self.model(img)
         # 返回结果
-        return str(results.pandas())
+        return results
