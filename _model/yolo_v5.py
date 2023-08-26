@@ -3,6 +3,7 @@ import torch
 
 class YoloV5Ctl(object):
     def __init__(self):
+        # 模型对象
         self.model = None
 
     def init(self):

@@ -12,6 +12,7 @@ app = FastAPI()
 yolo_v5_ctl = yolo_v5.YoloV5Ctl()
 yolo_v5_ctl.init()
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
