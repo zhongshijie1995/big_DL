@@ -6,6 +6,7 @@ import cv2
 import loguru
 
 from _model import yolo_v5
+from _tool import comm
 
 
 logger = loguru.logger
@@ -24,21 +25,26 @@ def realtime(feq: int, task_func_list: List[Callable], task_func_args_list: List
     # 准备捕获器
     cap = cv2.VideoCapture(1)
     # 时间冲撞器
-    last_task_second = 61
+    last_task_datetime = None
     # 循环捕获
     while True:
+        # 获取当前时间
+        now_datetime = datetime.datetime.now()
         # 提取视频帧
         ret, frame = cap.read()
-        # 实时打印视频帧
-        cv2.imshow("video", frame)
-        now_second = datetime.datetime.now().second
-        if now_second % feq == 0 and last_task_second != now_second:
-            last_task_second = now_second
+        if now_datetime.second % feq == 0 and last_task_datetime != now_datetime.second:
+            last_task_datetime = now_datetime.second
             for i in range(len(task_func_list)):
                 pool.submit(task_func_list[i], frame, task_func_args_list[i])
+        # 如需警报，则附加警报色
+        if comm.report_datetime == now_datetime.strftime('%Y-%m-%d %H:%M:%S'):
+            frame = cv2.applyColorMap(frame, colormap=cv2.COLORMAP_HOT)
+        # 实时打印视频帧
+        cv2.imshow("实况", frame)
         # 提取结束指令
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
+    # 停止线程池
     pool.shutdown(wait=False)
     # 结束捕获器
     cap.release()
