@@ -6,8 +6,7 @@ import cv2
 import loguru
 
 from _model import yolo_v5
-from _tool import comm
-
+from _comm import comm
 
 logger = loguru.logger
 
